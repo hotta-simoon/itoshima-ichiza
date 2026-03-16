@@ -15,213 +15,118 @@
       padding: 16px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
+    header { text-align: center; margin-bottom: 16px; }
+    header h1 { font-size: 1.4rem; font-weight: bold; margin-bottom: 6px; }
 
     .status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 0.85rem;
-      color: #555;
-      flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; font-size: 0.82rem; color: #555; flex-wrap: wrap;
     }
 
     .spinner {
-      display: none;
-      width: 14px;
-      height: 14px;
-      border: 2px solid #ccc;
-      border-top-color: #555;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      display: none; width: 13px; height: 13px;
+      border: 2px solid #ccc; border-top-color: #555;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
     }
     .spinner.active { display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .error-msg {
-      display: none;
-      background: #ffebee;
-      color: #c62828;
-      border: 1px solid #ef9a9a;
-      border-radius: 6px;
-      padding: 8px 14px;
-      text-align: center;
-      font-size: 0.85rem;
-      margin-bottom: 12px;
+      display: none; background: #ffebee; color: #c62828;
+      border: 1px solid #ef9a9a; border-radius: 6px;
+      padding: 8px 14px; text-align: center; font-size: 0.82rem; margin-bottom: 10px;
     }
     .error-msg.visible { display: block; }
 
     .legend {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 16px;
-      font-size: 0.85rem;
+      display: flex; justify-content: center; gap: 16px;
+      margin-bottom: 10px; font-size: 0.82rem; flex-wrap: wrap;
     }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .legend-box {
-      width: 18px;
-      height: 18px;
-      border-radius: 3px;
-    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-box { width: 16px; height: 16px; border-radius: 3px; }
     .legend-box.available { background: #4CAF50; }
     .legend-box.reserved  { background: #9E9E9E; }
+    .legend-box.free      { background: #78909C; }
 
     .seat-count {
-      text-align: center;
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #2e7d32;
+      text-align: center; font-size: 1rem; font-weight: bold;
+      margin-bottom: 16px; color: #2e7d32;
     }
 
-    /* ホール全体ラッパー */
+    /* ホール全体 — hallを内容幅に合わせることでステージが全席にかかる */
     .hall-wrapper {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      display: flex;
+      justify-content: center;
+      padding-bottom: 16px;
     }
 
-    .hall {
-      min-width: 640px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .hall { flex-shrink: 0; }
 
     /* ステージ */
     .stage {
-      background: #455a64;
-      color: #fff;
-      text-align: center;
-      padding: 14px 0;
+      background: #455a64; color: #fff;
+      text-align: center; padding: 12px 0;
       border-radius: 6px 6px 0 0;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-      margin-bottom: 24px;
+      font-size: 0.95rem; letter-spacing: 0.15em;
+      margin-bottom: 20px;
     }
 
     /* 座席エリア */
-    .seat-area {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    .seat-area { display: flex; flex-direction: column; gap: 4px; }
+    .seat-row  { display: flex; align-items: center; }
 
-    .seat-row {
-      display: flex;
-      align-items: center;
-      gap: 0;
-    }
-
-    /* 列ラベル */
     .row-label {
-      width: 22px;
-      min-width: 22px;
-      font-size: 0.75rem;
-      font-weight: bold;
-      text-align: center;
-      color: #666;
-      user-select: none;
+      width: 20px; min-width: 20px;
+      font-size: 0.72rem; font-weight: bold;
+      text-align: center; color: #555; user-select: none;
     }
+    .row-free .row-label { color: #546E7A; }
 
-    /* ブロックコンテナ */
-    .blocks {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 0;
-    }
+    .blocks { display: flex; align-items: center; }
+    .block  { display: flex; flex-wrap: nowrap; gap: 2px; }
+    .aisle  { width: 16px; min-width: 16px; flex-shrink: 0; }
 
-    .block {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 3px;
-    }
-
-    /* 通路スペース */
-    .aisle {
-      width: 20px;
-      min-width: 20px;
-      flex-shrink: 0;
-    }
-
-    /* 透明スペーサー（A〜G左ブロック1〜2番相当の空き） */
-    .seat.placeholder {
-      background: transparent;
-      pointer-events: none;
-      flex-shrink: 0;
-    }
-
-    /* 座席ボタン */
+    /* 座席 */
     .seat {
-      width: 22px;
-      height: 22px;
-      border-radius: 3px;
-      border: none;
-      cursor: default;
-      position: relative;
-      transition: filter 0.15s;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      font-weight: bold;
-      color: rgba(255,255,255,0.9);
-      user-select: none;
+      width: 20px; height: 20px;
+      border-radius: 3px; border: none;
+      cursor: default; position: relative;
+      transition: filter 0.15s; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 7px; font-weight: bold;
+      color: rgba(255,255,255,0.9); user-select: none;
     }
-
-    .seat.available {
-      background: #4CAF50;
-    }
-    .seat.available:hover {
-      filter: brightness(1.15);
-    }
-    .seat.reserved {
-      background: #9E9E9E;
-    }
+    .seat.available  { background: #4CAF50; }
+    .seat.available:hover { filter: brightness(1.15); }
+    .seat.reserved   { background: #9E9E9E; }
+    .seat.free       { background: #78909C; }
+    .seat.placeholder { background: transparent; pointer-events: none; }
 
     /* ツールチップ */
     .seat[data-tip]:hover::after {
       content: attr(data-tip);
-      position: absolute;
-      bottom: calc(100% + 4px);
-      left: 50%;
+      position: absolute; bottom: calc(100% + 4px); left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.75);
-      color: #fff;
-      font-size: 0.7rem;
-      white-space: nowrap;
-      padding: 2px 6px;
-      border-radius: 3px;
-      pointer-events: none;
-      z-index: 10;
+      background: rgba(0,0,0,0.75); color: #fff;
+      font-size: 0.68rem; white-space: nowrap;
+      padding: 2px 6px; border-radius: 3px;
+      pointer-events: none; z-index: 10;
     }
+
+    /* 自由席区切り */
+    .free-section-label {
+      text-align: center; font-size: 0.78rem; font-weight: bold;
+      color: #546E7A; margin: 14px 0 6px;
+      padding-top: 10px;
+      border-top: 2px dashed #90A4AE;
+    }
+    .free-section-label span { font-weight: normal; color: #78909C; }
 
     footer {
-      text-align: center;
-      margin-top: 28px;
-      font-size: 0.75rem;
-      color: #aaa;
-    }
-
-    @media (max-width: 680px) {
-      .seat { width: 18px; height: 18px; border-radius: 2px; }
-      .aisle { width: 10px; min-width: 10px; }
-      .block { gap: 2px; }
+      text-align: center; margin-top: 24px;
+      font-size: 0.72rem; color: #aaa;
     }
   </style>
 </head>
@@ -238,8 +143,9 @@
 <div class="error-msg" id="error-msg"></div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-box available"></div><span>空席</span></div>
-  <div class="legend-item"><div class="legend-box reserved"></div><span>予約済</span></div>
+  <div class="legend-item"><div class="legend-box available"></div><span>空席（指定席）</span></div>
+  <div class="legend-item"><div class="legend-box reserved"></div><span>予約済（指定席）</span></div>
+  <div class="legend-item"><div class="legend-box free"></div><span>自由席</span></div>
 </div>
 
 <div class="seat-count" id="seat-count">－</div>
@@ -247,9 +153,7 @@
 <div class="hall-wrapper">
   <div class="hall">
     <div class="stage">▲ ステージ（舞台）</div>
-    <div class="seat-area" id="seat-area">
-      <!-- JS で描画 -->
-    </div>
+    <div class="seat-area" id="seat-area"></div>
   </div>
 </div>
 
@@ -257,25 +161,28 @@
 
 <script>
   // ============================================================
-  // 設定：GAS Web アプリの URL をここに貼り付けてください
+  // GAS Web アプリの URL
   // ============================================================
   const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxwObS7LrpYx6jT6C1gBH32t6jCt2PdijIGWLEGUK8NyTgjSe8GWkZ-iWJJxJD7jSJtoA/exec";
 
   // ============================================================
   // 座席レイアウト定義
+  //   A〜G: 左(3-10), 中(11-24), 右(25-34) = 32席 / 番号3〜34
+  //   H〜O: 左(1-10), 中(11-24), 右(25-36) = 36席 / 番号1〜36
+  //   P〜W: H〜Oと同構成だが自由席（指定不可）
   // ============================================================
-  const ROWS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"];
+  const ROWS_SHITEI = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"];
+  const ROWS_JIYU   = ["P","Q","R","S","T","U","V","W"];
 
-  // A〜G：左(3-10 ※1-2は空き), 中(1-24), 右(25-36)
-  // H〜O：左(1-10),             中(1-24), 右(25-36)
-  // ※左ブロック3-10と中央ブロック1-24は番号が重複するため、
-  //   IDにブロック名を含めて区別する（例: seat-A-left-5, seat-A-center-5）
   function getBlockDef(row) {
     const isAG = ["A","B","C","D","E","F","G"].includes(row);
     return {
-      left:   { name: "left",   seats: isAG ? range(3, 10) : range(1, 10), spacers: isAG ? 2 : 0 },
-      center: { name: "center", seats: range(1, 24),  spacers: 0 },
-      right:  { name: "right",  seats: range(25, 36), spacers: 0 }
+      left:   { seats: isAG ? range(3, 10)  : range(1, 10),
+                spacersBefore: isAG ? 2 : 0, spacersAfter: 0 },
+      center: { seats: range(11, 24),
+                spacersBefore: 0, spacersAfter: 0 },
+      right:  { seats: isAG ? range(25, 34) : range(25, 36),
+                spacersBefore: 0, spacersAfter: isAG ? 2 : 0 }
     };
   }
 
@@ -286,62 +193,72 @@
   }
 
   // ============================================================
-  // 状態
-  // ============================================================
-  let lastData = null; // 最後に成功したデータ
-
-  // ============================================================
-  // 初期描画：DOM 構造を一度だけ生成
+  // DOM 構築
   // ============================================================
   function buildSeatDOM() {
     const area = document.getElementById("seat-area");
     area.innerHTML = "";
 
-    ROWS.forEach(row => {
-      const def = getBlockDef(row);
-      const rowEl = document.createElement("div");
-      rowEl.className = "seat-row";
+    // 指定席 A〜O
+    ROWS_SHITEI.forEach(row => area.appendChild(buildRow(row, false)));
 
-      // 列ラベル
-      const label = document.createElement("div");
-      label.className = "row-label";
-      label.textContent = row;
-      rowEl.appendChild(label);
+    // 自由席区切り
+    const divider = document.createElement("div");
+    divider.className = "free-section-label";
+    divider.innerHTML = '自由席 <span>（座席番号の指定不可・当日自由着席）</span>';
+    area.appendChild(divider);
 
-      // ブロックコンテナ
-      const blocksEl = document.createElement("div");
-      blocksEl.className = "blocks";
-
-      blocksEl.appendChild(buildBlock(row, def.left));
-      blocksEl.appendChild(buildAisle());
-      blocksEl.appendChild(buildBlock(row, def.center));
-      blocksEl.appendChild(buildAisle());
-      blocksEl.appendChild(buildBlock(row, def.right));
-
-      rowEl.appendChild(blocksEl);
-      area.appendChild(rowEl);
-    });
+    // 自由席 P〜W
+    ROWS_JIYU.forEach(row => area.appendChild(buildRow(row, true)));
   }
 
-  function buildBlock(row, blockDef) {
+  function buildRow(row, isFree) {
+    const def   = getBlockDef(row);
+    const rowEl = document.createElement("div");
+    rowEl.className = "seat-row" + (isFree ? " row-free" : "");
+
+    const label = document.createElement("div");
+    label.className = "row-label";
+    label.textContent = row;
+    rowEl.appendChild(label);
+
+    const blocksEl = document.createElement("div");
+    blocksEl.className = "blocks";
+    blocksEl.appendChild(buildBlock(row, def.left,   isFree));
+    blocksEl.appendChild(buildAisle());
+    blocksEl.appendChild(buildBlock(row, def.center, isFree));
+    blocksEl.appendChild(buildAisle());
+    blocksEl.appendChild(buildBlock(row, def.right,  isFree));
+    rowEl.appendChild(blocksEl);
+    return rowEl;
+  }
+
+  function buildBlock(row, blockDef, isFree) {
     const blockEl = document.createElement("div");
     blockEl.className = "block";
-    // 左端の透明スペーサー（A〜G左ブロックの1〜2番相当）
-    for (let i = 0; i < blockDef.spacers; i++) {
-      const sp = document.createElement("div");
-      sp.className = "seat placeholder";
-      blockEl.appendChild(sp);
+
+    for (let i = 0; i < (blockDef.spacersBefore || 0); i++) {
+      blockEl.appendChild(makePlaceholder());
     }
     blockDef.seats.forEach(seatNum => {
       const btn = document.createElement("div");
-      btn.className = "seat available";
-      btn.dataset.tip = `${row}-${seatNum}`;
-      // ブロック名を含むIDで重複を回避
-      btn.id = `seat-${row}-${blockDef.name}-${seatNum}`;
+      btn.className   = isFree ? "seat free" : "seat available";
+      btn.dataset.tip = isFree ? `${row}列 自由席` : `${row}-${seatNum}`;
+      if (!isFree) btn.id = `seat-${row}-${seatNum}`;
       btn.textContent = String(seatNum);
       blockEl.appendChild(btn);
     });
+    for (let i = 0; i < (blockDef.spacersAfter || 0); i++) {
+      blockEl.appendChild(makePlaceholder());
+    }
+
     return blockEl;
+  }
+
+  function makePlaceholder() {
+    const sp = document.createElement("div");
+    sp.className = "seat placeholder";
+    return sp;
   }
 
   function buildAisle() {
@@ -351,10 +268,12 @@
   }
 
   // ============================================================
-  // データ取得・座席更新
+  // データ取得・更新
   // ============================================================
+  let lastData = null;
+
   async function fetchSeats() {
-    const spinner = document.getElementById("spinner");
+    const spinner  = document.getElementById("spinner");
     const errorMsg = document.getElementById("error-msg");
     spinner.classList.add("active");
 
@@ -368,15 +287,14 @@
     } catch (err) {
       errorMsg.textContent = `データ取得に失敗しました（${err.message}）。最後に取得したデータを表示しています。`;
       errorMsg.classList.add("visible");
-      // 最後の成功データは保持したままにする
     } finally {
       spinner.classList.remove("active");
     }
   }
 
   function applySeats(data) {
-    // プレースホルダー以外をリセット
-    document.querySelectorAll(".seat:not(.placeholder)").forEach(el => {
+    // 指定席のみリセット（自由席・プレースホルダーは除外）
+    document.querySelectorAll(".seat.available, .seat.reserved").forEach(el => {
       el.className = "seat available";
     });
 
@@ -384,7 +302,7 @@
     let reservedCount = 0;
 
     data.seats.forEach(s => {
-      const el = document.getElementById(`seat-${s.row}-${s.block}-${s.seat_number}`);
+      const el = document.getElementById(`seat-${s.row}-${s.seat_number}`);
       if (!el) return;
       totalSeats++;
       if (s.reserved) {
@@ -395,15 +313,11 @@
 
     const available = totalSeats - reservedCount;
     document.getElementById("seat-count").textContent =
-      `残り ${available} 席 / 全 ${totalSeats} 席`;
+      `残り ${available} 席 / 全 ${totalSeats} 席（指定席）`;
 
-    // 更新日時
     const dt = new Date(data.updated_at);
-    const fmt = dt.toLocaleString("ja-JP", {
-      year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit", second: "2-digit"
-    });
-    document.getElementById("updated-at").textContent = `最終更新：${fmt}`;
+    document.getElementById("updated-at").textContent =
+      `最終更新：${dt.toLocaleString("ja-JP")}`;
   }
 
   // ============================================================
