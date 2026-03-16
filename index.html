@@ -158,6 +158,13 @@
       flex-shrink: 0;
     }
 
+    /* 透明スペーサー（A〜G左ブロック1〜2番相当の空き） */
+    .seat.placeholder {
+      background: transparent;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
     /* 座席ボタン */
     .seat {
       width: 22px;
@@ -252,14 +259,14 @@
   // ============================================================
   const ROWS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"];
 
-  // A〜G：左(3-10), 中(1-24), 右(25-36)
-  // H〜O：左(1-10), 中(1-24), 右(25-36)
+  // A〜G：左(3-10 ※1-2は空き), 中(1-24), 右(25-36)
+  // H〜O：左(1-10),             中(1-24), 右(25-36)
   function getBlockDef(row) {
     const isAG = ["A","B","C","D","E","F","G"].includes(row);
     return {
-      left:   isAG ? range(3, 10)  : range(1, 10),
-      center: range(1, 24),
-      right:  range(25, 36)
+      left:   { seats: isAG ? range(3, 10) : range(1, 10), spacers: isAG ? 2 : 0 },
+      center: { seats: range(1, 24),  spacers: 0 },
+      right:  { seats: range(25, 36), spacers: 0 }
     };
   }
 
@@ -297,25 +304,31 @@
       blocksEl.className = "blocks";
 
       // 左ブロック
-      blocksEl.appendChild(buildBlock(row, def.left, "left"));
+      blocksEl.appendChild(buildBlock(row, def.left));
       // 通路
       blocksEl.appendChild(buildAisle());
       // 中央ブロック
-      blocksEl.appendChild(buildBlock(row, def.center, "center"));
+      blocksEl.appendChild(buildBlock(row, def.center));
       // 通路
       blocksEl.appendChild(buildAisle());
       // 右ブロック
-      blocksEl.appendChild(buildBlock(row, def.right, "right"));
+      blocksEl.appendChild(buildBlock(row, def.right));
 
       rowEl.appendChild(blocksEl);
       area.appendChild(rowEl);
     });
   }
 
-  function buildBlock(row, seats, blockName) {
+  function buildBlock(row, blockDef) {
     const blockEl = document.createElement("div");
     blockEl.className = "block";
-    seats.forEach(seatNum => {
+    // 左端の透明スペーサー（A〜G左ブロックの1〜2番相当）
+    for (let i = 0; i < blockDef.spacers; i++) {
+      const sp = document.createElement("div");
+      sp.className = "seat placeholder";
+      blockEl.appendChild(sp);
+    }
+    blockDef.seats.forEach(seatNum => {
       const btn = document.createElement("div");
       btn.className = "seat available";
       btn.dataset.tip = `${row}-${seatNum}`;
