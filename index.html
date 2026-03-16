@@ -175,6 +175,13 @@
       position: relative;
       transition: filter 0.15s;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: bold;
+      color: rgba(255,255,255,0.9);
+      user-select: none;
     }
 
     .seat.available {
@@ -261,12 +268,14 @@
 
   // A〜G：左(3-10 ※1-2は空き), 中(1-24), 右(25-36)
   // H〜O：左(1-10),             中(1-24), 右(25-36)
+  // ※左ブロック3-10と中央ブロック1-24は番号が重複するため、
+  //   IDにブロック名を含めて区別する（例: seat-A-left-5, seat-A-center-5）
   function getBlockDef(row) {
     const isAG = ["A","B","C","D","E","F","G"].includes(row);
     return {
-      left:   { seats: isAG ? range(3, 10) : range(1, 10), spacers: isAG ? 2 : 0 },
-      center: { seats: range(1, 24),  spacers: 0 },
-      right:  { seats: range(25, 36), spacers: 0 }
+      left:   { name: "left",   seats: isAG ? range(3, 10) : range(1, 10), spacers: isAG ? 2 : 0 },
+      center: { name: "center", seats: range(1, 24),  spacers: 0 },
+      right:  { name: "right",  seats: range(25, 36), spacers: 0 }
     };
   }
 
@@ -303,15 +312,10 @@
       const blocksEl = document.createElement("div");
       blocksEl.className = "blocks";
 
-      // 左ブロック
       blocksEl.appendChild(buildBlock(row, def.left));
-      // 通路
       blocksEl.appendChild(buildAisle());
-      // 中央ブロック
       blocksEl.appendChild(buildBlock(row, def.center));
-      // 通路
       blocksEl.appendChild(buildAisle());
-      // 右ブロック
       blocksEl.appendChild(buildBlock(row, def.right));
 
       rowEl.appendChild(blocksEl);
@@ -332,7 +336,9 @@
       const btn = document.createElement("div");
       btn.className = "seat available";
       btn.dataset.tip = `${row}-${seatNum}`;
-      btn.id = `seat-${row}-${seatNum}`;
+      // ブロック名を含むIDで重複を回避
+      btn.id = `seat-${row}-${blockDef.name}-${seatNum}`;
+      btn.textContent = String(seatNum);
       blockEl.appendChild(btn);
     });
     return blockEl;
@@ -369,8 +375,8 @@
   }
 
   function applySeats(data) {
-    // すべての座席をリセット（万が一のため）
-    document.querySelectorAll(".seat").forEach(el => {
+    // プレースホルダー以外をリセット
+    document.querySelectorAll(".seat:not(.placeholder)").forEach(el => {
       el.className = "seat available";
     });
 
@@ -378,7 +384,7 @@
     let reservedCount = 0;
 
     data.seats.forEach(s => {
-      const el = document.getElementById(`seat-${s.row}-${s.seat_number}`);
+      const el = document.getElementById(`seat-${s.row}-${s.block}-${s.seat_number}`);
       if (!el) return;
       totalSeats++;
       if (s.reserved) {
